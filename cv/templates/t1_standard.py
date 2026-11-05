@@ -11,7 +11,7 @@ p = d.para(CENTER, line=26); d.run(p, C.NAME, size=20, bold=True, color=NAVY)
 p = d.para(CENTER, line=16, after=2); d.run(p, C.TITLE_AR, size=11, bold=True)
 p = d.para(CENTER, line=14, after=2); d.run(p, C.TITLE_EN, size=9.5, color=MUTED, ltr=True)
 p = d.para(CENTER, line=15, after=2)
-d.contact_line(p, [(C.LOCATION, False), (C.PHONE, True), (C.EMAIL, True)], 10, MUTED)
+d.contact_line(p, [(C.LOCATION, False), (C.PHONE, True), (C.EMAIL, True), (C.EMAIL2, True)], 10, MUTED)
 
 
 def heading(text):

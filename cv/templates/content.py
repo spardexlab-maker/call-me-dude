@@ -10,8 +10,9 @@ NAME = "علي عبيس حبيب"
 TITLE_AR = "مهندس ميكانيك استشاري  |  رئيس مجلس إدارة ومدير عام مشاريع تنفيذية"
 TITLE_EN = "Consultant Mechanical Engineer  |  Chairman of the Board  |  General Manager of Projects"
 LOCATION = "جمهورية العراق"
-PHONE = "+964 783 333 7069"
-EMAIL = "info@al-ezza.com"
+PHONE = "+964 783 200 8002"
+EMAIL = "Ali.O@alnamaagroup.com"
+EMAIL2 = "ali.habib@al-ezza.com"
 
 SUMMARY = (
     "مهندس ميكانيك استشاري يتمتع بخبرة مهنية وتنفيذية تتجاوز 30 عاماً في قطاع الهندسة الميكانيكية "

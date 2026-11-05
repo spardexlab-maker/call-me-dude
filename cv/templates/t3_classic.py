@@ -13,7 +13,7 @@ p = d.para(CENTER, line=18, after=1); d.run(p, C.TITLE_AR, size=12, bold=True)
 p = d.para(CENTER, line=14, after=4); d.run(p, C.TITLE_EN, size=9, color=GREY, ltr=True)
 p = d.para(CENTER, line=18, after=6)
 d.border(p, top=(4, RULE, 4), bottom=(4, RULE, 4))
-d.contact_line(p, [(C.LOCATION, False), (C.PHONE, True), (C.EMAIL, True)], 10, INK, sep="   ◆   ")
+d.contact_line(p, [(C.LOCATION, False), (C.PHONE, True), (C.EMAIL, True), (C.EMAIL2, True)], 10, INK, sep="   ◆   ")
 
 
 def heading(text):

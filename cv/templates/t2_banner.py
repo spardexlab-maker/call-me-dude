@@ -22,7 +22,7 @@ p = band(line=34); d.run(p, C.NAME, size=26, bold=True, color="FFFFFF")
 p = band(line=18); d.run(p, C.TITLE_AR, size=12, bold=True, color="FFFFFF")
 p = band(line=15); d.run(p, C.TITLE_EN, size=9.5, color="CCE7E3", ltr=True)
 p = band(line=20)
-d.contact_line(p, [(C.LOCATION, False), (C.PHONE, True), (C.EMAIL, True)], 10, "FFFFFF")
+d.contact_line(p, [(C.LOCATION, False), (C.PHONE, True), (C.EMAIL, True), (C.EMAIL2, True)], 10, "FFFFFF")
 band(line=14)
 
 # stats strip (tinted)

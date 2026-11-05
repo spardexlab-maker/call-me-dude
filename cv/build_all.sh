@@ -11,5 +11,10 @@ python3 t3_classic.py  ../designs/CV_Design3_Classic.docx
 python3 t4_sidebar.py  ../designs/CV_Design4_Sidebar.docx
 python3 t5_timeline.py ../designs/CV_Design5_Timeline.docx
 python3 t6_framed.py   ../designs/CV_Design6_Framed.docx
+mkdir -p ../designs/sidebar
+python3 t4_sidebar.py  ../designs/sidebar/CV_Sidebar_AR.docx ar
+python3 t4_sidebar.py  ../designs/sidebar/CV_Sidebar_AR_Photo.docx ar photo
+python3 t4_sidebar.py  ../designs/sidebar/CV_Sidebar_EN.docx en
+python3 t4_sidebar.py  ../designs/sidebar/CV_Sidebar_EN_Photo.docx en photo
 cd ../designs
-for f in CV_Design*.docx; do soffice --headless --convert-to pdf "$f" >/dev/null 2>&1; done
+for f in CV_Design*.docx sidebar/*.docx; do soffice --headless --convert-to pdf --outdir "$(dirname "$f")" "$f" >/dev/null 2>&1; done

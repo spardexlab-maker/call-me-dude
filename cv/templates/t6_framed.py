@@ -22,7 +22,7 @@ p = boxed(36); d.run(p, C.NAME, size=26, bold=True, color=OLIVE)
 p = boxed(18); d.run(p, C.TITLE_AR, size=11.5, bold=True, color=GOLD)
 p = boxed(14); d.run(p, C.TITLE_EN, size=9, color=MUTED, ltr=True)
 p = boxed(20)
-d.contact_line(p, [(C.LOCATION, False), (C.PHONE, True), (C.EMAIL, True)], 10, OLIVE, sep="    •    ")
+d.contact_line(p, [(C.LOCATION, False), (C.PHONE, True), (C.EMAIL, True), (C.EMAIL2, True)], 10, OLIVE, sep="    •    ")
 boxed(8)
 
 # stats row

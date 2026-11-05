@@ -12,7 +12,7 @@ p = d.para(START, line=38); d.run(p, C.NAME, size=28, bold=True, color=INDIGO)
 p = d.para(START, line=17); d.run(p, C.TITLE_AR, size=11.5, bold=True, color=INK)
 p = d.para(START, line=14); d.run(p, C.TITLE_EN, size=9, color=MUTED, ltr=True)
 p = d.para(START, line=18, after=4)
-d.contact_line(p, [(C.PHONE, True), (C.EMAIL, True), (C.LOCATION, False)], 9.5, INDIGO, sep="     ")
+d.contact_line(p, [(C.PHONE, True), (C.EMAIL, True), (C.EMAIL2, True), (C.LOCATION, False)], 9.5, INDIGO, sep="     ")
 d.border(p, bottom=(24, INDIGO, 6))
 
 n = [0]

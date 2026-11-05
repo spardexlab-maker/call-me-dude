@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Small RTL (Arabic) helper layer over python-docx shared by all templates.
+"""Small RTL (Arabic) / LTR (English) helper layer over python-docx shared by all templates.
 
 In a bidi paragraph OOXML's jc/ind "left" means the logical start edge, which is
 the visual right side in Arabic. Helpers below use start/end naming to hide that.
@@ -26,13 +26,15 @@ def _el(tag, **attrs):
 
 
 class RTLDoc:
-    def __init__(self, font, size=10, margins=(1.6, 1.8, 1.6, 1.8), ink="1A1A1A"):
+    def __init__(self, font, size=10, margins=(1.6, 1.8, 1.6, 1.8), ink="1A1A1A", rtl=True):
         self.doc = Document()
+        self.rtl = rtl
         self.font, self.size, self.ink = font, size, ink
         s = self.doc.sections[0]
         s.page_width, s.page_height = Cm(21.0), Cm(29.7)
         s.top_margin, s.right_margin, s.bottom_margin, s.left_margin = (Cm(m) for m in margins)
-        s._sectPr.append(_el("w:bidi"))
+        if rtl:
+            s._sectPr.append(_el("w:bidi"))
         self.section = s
         self.width = s.page_width - s.left_margin - s.right_margin
         st = self.doc.styles["Normal"]
@@ -42,12 +44,13 @@ class RTLDoc:
         for a in ("w:ascii", "w:hAnsi", "w:cs", "w:eastAsia"):
             rf.set(qn(a), font)
         rpr.append(_el("w:szCs", val=int(size * 2)))
-        rpr.append(_el("w:lang", bidi="ar-IQ"))
+        rpr.append(_el("w:lang", val="en-US", bidi="ar-IQ"))
         st.paragraph_format.space_after = Pt(0)
 
     # ------------------------------------------------------------ primitives
-    @staticmethod
-    def bidi(p):
+    def bidi(self, p):
+        if not self.rtl:
+            return
         ppr = p._p.get_or_add_pPr()
         b = _el("w:bidi")
         for tag in ("w:adjustRightInd", "w:snapToGrid", "w:spacing", "w:ind", "w:jc"):
@@ -74,6 +77,7 @@ class RTLDoc:
 
     def run(self, p, text, size=None, bold=False, color=None, ltr=False, font=None):
         size = size or self.size
+        ltr = ltr and self.rtl          # embedding marks only matter inside RTL text
         r = p.add_run(f"{LRE}{text}{PDF_}" if ltr else text)
         r.font.size = Pt(size)
         r.font.bold = bold
@@ -88,7 +92,7 @@ class RTLDoc:
         rp.find(qn("w:sz")).addnext(_el("w:szCs", val=int(size * 2)))
         if bold:
             rp.find(qn("w:b")).addnext(_el("w:bCs"))
-        if not ltr:
+        if self.rtl and not ltr:
             rp.append(_el("w:rtl"))
         return r
 
@@ -97,8 +101,7 @@ class RTLDoc:
         ppr = p._p.get_or_add_pPr()
         ppr.append(_el("w:shd", val="clear", color="auto", fill=fill.lstrip("#")))
 
-    @staticmethod
-    def border(p, **sides):
+    def border(self, p, **sides):
         """sides: top/bottom/start/end -> (size_eighths, color_hex, space_pt)."""
         ppr = p._p.get_or_add_pPr()
         bdr = ppr.find(qn("w:pBdr"))
@@ -112,7 +115,10 @@ class RTLDoc:
             else:
                 ppr.append(bdr)
         # paragraph borders are visual: in RTL the start edge is the right side
-        names = {"top": "top", "start": "right", "bottom": "bottom", "end": "left"}
+        if self.rtl:
+            names = {"top": "top", "start": "right", "bottom": "bottom", "end": "left"}
+        else:
+            names = {"top": "top", "start": "left", "bottom": "bottom", "end": "right"}
         for side in ("top", "start", "bottom", "end"):
             if side in sides:
                 sz, color, space = sides[side]
@@ -142,7 +148,8 @@ class RTLDoc:
     def table(self, widths_cm, fills=None):
         t = self.doc.add_table(rows=1, cols=len(widths_cm))
         tblPr = t._tbl.tblPr
-        tblPr.append(_el("w:bidiVisual"))
+        if self.rtl:
+            tblPr.append(_el("w:bidiVisual"))
         for old in tblPr.findall(qn("w:tblW")):
             tblPr.remove(old)
         tblPr.append(_el("w:tblW", w=int(sum(widths_cm) * 567), type="dxa"))
@@ -170,11 +177,12 @@ class RTLDoc:
             # remove the default empty paragraph later via first-use helper
         return t
 
-    @staticmethod
-    def cell_padding(cell, top=0, start=0, bottom=0, end=0):
+    def cell_padding(self, cell, top=0, start=0, bottom=0, end=0):
         tcPr = cell._tc.get_or_add_tcPr()
         m = _el("w:tcMar")
-        for side, v in (("top", top), ("left", start), ("bottom", bottom), ("right", end)):
+        # tcMar left/right are physical sides, so the start edge is the right side in RTL
+        s_side, e_side = ("right", "left") if self.rtl else ("left", "right")
+        for side, v in (("top", top), (s_side, start), ("bottom", bottom), (e_side, end)):
             m.append(_el("w:" + side, w=int(v * 567), type="dxa"))
         tcPr.append(m)
 
