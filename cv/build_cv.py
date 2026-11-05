@@ -127,9 +127,12 @@ def subhead(text, before=4):
 
 # ---------------------------------------------------------------- Header
 p = para(WD_ALIGN_PARAGRAPH.CENTER, after=0, line=26)
-run(p, "المهندس علي عبيس حبيب", size=20, bold=True, color=ACCENT)
+run(p, "علي عبيس حبيب", size=20, bold=True, color=ACCENT)  # no title prefix: ATS reads first word as first name
 p = para(WD_ALIGN_PARAGRAPH.CENTER, after=2, line=16)
 run(p, "مهندس ميكانيك استشاري  |  رئيس مجلس إدارة ومدير عام مشاريع تنفيذية", size=11, bold=True)
+p = para(WD_ALIGN_PARAGRAPH.CENTER, after=2, line=14)
+r = p.add_run("\u202aConsultant Mechanical Engineer  |  Chairman of the Board  |  General Manager of Projects\u202c")
+r.font.size = Pt(9.5); r.font.color.rgb = MUTED
 p = para(WD_ALIGN_PARAGRAPH.CENTER, after=2, line=15)
 run(p, "جمهورية العراق   |   ", size=10, color=MUTED)
 r = p.add_run("\u202a+964 783 333 7069\u202c")  # keep LTR inside RTL line; r.font.size = Pt(10); r.font.color.rgb = MUTED
@@ -159,6 +162,15 @@ bullet("المنظومات الميكانيكية والهيدروليكية، �
 bullet("AutoCAD لإعداد وتدقيق المخططات الهندسية والتنفيذية، Microsoft Project للجدولة، "
        "Microsoft Office (Word, Excel, PowerPoint) للتقارير الفنية وإدارة البيانات",
        lead="البرمجيات")
+p = para(before=2, after=1, line=14)
+p.paragraph_format.left_indent = Cm(0.45)
+run(p, "Keywords: ", size=9, bold=True, color=MUTED)
+r = p.add_run("Project Management, Construction Management, MEP, Mechanical Engineering, "
+              "Water & Wastewater Treatment Plants, Pumping Stations, Sewerage Networks, "
+              "Infrastructure, Hospitals, Residential Towers, Bridges, FIDIC Contracts, "
+              "Contract Negotiation, Supply Chain, Budgeting, Testing & Commissioning, "
+              "Industrial Manufacturing, GRC, AutoCAD, MS Project")
+r.font.size = Pt(9); r.font.color.rgb = MUTED
 
 # ---------------------------------------------------------------- Experience
 heading("الخبرة المهنية")
