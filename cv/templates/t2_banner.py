@@ -6,7 +6,7 @@ from rtl import RTLDoc, START, CENTER
 import content as C
 
 TEAL, DARK, TINT, MUTED = "0F766E", "134E4A", "E6F4F2", "5B6B6A"
-d = RTLDoc("Tajawal", size=10.5, margins=(1.0, 1.7, 1.4, 1.7))
+d = RTLDoc("Tajawal", size=10.5, margins=(0.8, 1.6, 1.0, 1.6))
 BLEED = 1.7  # cm, pull band paragraphs out to the page edge
 
 
@@ -36,7 +36,7 @@ for i, (num, label) in enumerate(C.STATS):
 
 
 def heading(text):
-    p = d.para(before=12, after=5, line=19, keep_next=True)
+    p = d.para(before=9, after=4, line=18, keep_next=True)
     d.shade(p, TINT)
     d.border(p, start=(36, TEAL, 6))
     d.run(p, " " + text, size=12.5, bold=True, color=DARK)
@@ -66,13 +66,15 @@ for i, r in enumerate(C.ROLES):
     for lead, text in r["bullets"]:
         d.bullet(text, lead=lead, marker="•", marker_color=TEAL, lead_color=DARK, line=15)
     for gh, items in r["groups"]:
-        p = d.para(before=5, after=1, line=15, start_indent=0.3, keep_next=True)
+        if items is None:
+            p = d.para(before=8, after=2, line=17, keep_next=True)
+            d.shade(p, TINT)
+            d.run(p, " " + gh, size=10.5, bold=True, color=DARK)
+            continue
+        p = d.para(before=4, after=1, line=15, start_indent=0.3, keep_next=True)
         d.run(p, gh, size=10.5, bold=True, color=TEAL)
-        p = d.para(after=1, line=15, start_indent=0.3)
-        for j, it in enumerate(items):
-            if j:
-                d.run(p, "   •   ", size=10, bold=True, color=TEAL)
-            d.run(p, it, size=10)
+        for it in items:
+            d.bullet(it, marker="–", marker_color=TEAL, indent=0.9, size=10, line=13.5, after=0)
 
 heading("الشراكات والاستثمارات")
 P = C.PARTNERSHIP

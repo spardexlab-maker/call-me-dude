@@ -48,10 +48,15 @@ for i, r in enumerate(C.ROLES):
     for lead, text in r["bullets"]:
         d.bullet(text, lead=lead, marker="◆", marker_color=WINE, lead_color=INK, line=15.5)
     for gh, items in r["groups"]:
-        p = d.para(before=6, after=1, line=15.5, start_indent=0.45, keep_next=True)
+        if items is None:
+            p = d.para(CENTER, before=8, after=2, line=17, keep_next=True)
+            d.run(p, gh, size=11.5, bold=True, color=WINE)
+            d.border(p, top=(4, RULE, 2), bottom=(4, RULE, 2))
+            continue
+        p = d.para(before=5, after=1, line=15.5, start_indent=0.45, keep_next=True)
         d.run(p, gh, size=11, bold=True, color=WINE)
-        p = d.para(after=1, line=15.5, start_indent=0.45)
-        d.run(p, "، ".join(it.replace(" — ", " (", 1) + ")" for it in items), size=10.5)
+        for it in items:
+            d.bullet(it, marker="–", marker_color=WINE, indent=1.0, size=10, line=14.5, after=0)
 
 heading("الشراكات والاستثمارات")
 P = C.PARTNERSHIP

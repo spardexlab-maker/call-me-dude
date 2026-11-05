@@ -101,6 +101,11 @@ for i, r in enumerate(C.ROLES):
     for lead, text in r["bullets"]:
         d.bullet(text, lead=lead, marker="•", marker_color=GOLD, lead_color=CHAR, line=14.5, container=main)
     for gh, items in r["groups"]:
+        if items is None:
+            p = d.para(before=7, after=1, line=16, container=main)
+            d.run(p, gh, size=10.5, bold=True, color=GOLD)
+            d.border(p, bottom=(4, GOLD, 1))
+            continue
         p = d.para(before=4, after=1, line=14.5, start_indent=0.3, container=main)
         d.run(p, gh, size=10, bold=True, color=CHAR)
         for it in items:
